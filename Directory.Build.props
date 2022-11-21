@@ -7,5 +7,6 @@
     <NeutralLanguage>en-US</NeutralLanguage>
     <Nullable>enable</Nullable>
     <RepoRoot>$(MSBuildThisFileDirectory)</RepoRoot>
+    <RootNamespace>AdventOfCode2022</RootNamespace>
   </PropertyGroup>
 </Project>
