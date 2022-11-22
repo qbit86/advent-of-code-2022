@@ -10,7 +10,8 @@ public sealed class PuzzlePartOne : IPuzzle<long>
     public async Task<long> SolveAsync(TextReader input)
     {
         ArgumentNullException.ThrowIfNull(input);
-        IReadOnlyList<string> lines = await input.ReadAllLinesAsync().ConfigureAwait(false);
+        List<string> lines = new();
+        await input.ReadAllLinesAsync(lines).ConfigureAwait(false);
         return SolveCore(lines);
     }
 

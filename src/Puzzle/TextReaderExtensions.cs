@@ -7,11 +7,11 @@ namespace AdventOfCode2022;
 
 internal static class TextReaderExtensions
 {
-    internal static async Task<IReadOnlyList<string>> ReadAllLinesAsync(this TextReader input)
+    internal static async Task ReadAllLinesAsync<TLines>(this TextReader input, TLines lines)
+        where TLines : ICollection<string>
     {
         ArgumentNullException.ThrowIfNull(input);
 
-        List<string> lines = new();
         while (true)
         {
             string? line = await input.ReadLineAsync().ConfigureAwait(false);
@@ -20,7 +20,5 @@ internal static class TextReaderExtensions
 
             lines.Add(line);
         }
-
-        return lines;
     }
 }
