@@ -1,6 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace AdventOfCode2022;
@@ -10,10 +10,14 @@ public sealed class PuzzlePartOne : IPuzzle<long>
     public async Task<long> SolveAsync(TextReader input)
     {
         ArgumentNullException.ThrowIfNull(input);
-        List<string> lines = new();
-        await input.ReadAllLinesAsync(lines).ConfigureAwait(false);
-        return SolveCore(lines);
+        string text = await input.ReadToEndAsync().ConfigureAwait(false);
+        return SolveCore(text);
     }
 
-    private long SolveCore(IReadOnlyList<string> lines) => throw new NotImplementedException();
+    private long SolveCore(string text)
+    {
+        string[] inventoryStrings = text.Split(Helpers.OuterSeparators, StringSplitOptions.RemoveEmptyEntries);
+        int[][] inventories = inventoryStrings.Select(Helpers.ParseInventory).ToArray();
+        return inventories.Max(i => i.Sum());
+    }
 }
