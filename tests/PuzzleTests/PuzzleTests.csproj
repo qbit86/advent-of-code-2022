@@ -26,8 +26,9 @@
     <None Update="sample-input.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="input.txt">
+    <None Include="$(RepoRoot)src\ConsoleRunner\input.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>input.txt</Link>
     </None>
   </ItemGroup>
 
