@@ -9,8 +9,6 @@ namespace AdventOfCode2022;
 
 public sealed class PuzzlePartTwo : IPuzzle<long>
 {
-    private const int GroupSize = 3;
-
     public async Task<long> SolveAsync(TextReader input)
     {
         ArgumentNullException.ThrowIfNull(input);
@@ -21,13 +19,14 @@ public sealed class PuzzlePartTwo : IPuzzle<long>
 
     private long SolveCore(List<string> lines)
     {
+        const int groupSize = 3;
         Span<string> rucksacks = CollectionsMarshal.AsSpan(lines);
-        int groupCount = lines.Count / GroupSize;
+        int groupCount = lines.Count / groupSize;
         long result = 0L;
         for (int groupIndex = 0; groupIndex < groupCount; ++groupIndex)
         {
-            int groupOffset = groupIndex * GroupSize;
-            ReadOnlySpan<string> group = rucksacks.Slice(groupOffset, GroupSize);
+            int groupOffset = groupIndex * groupSize;
+            ReadOnlySpan<string> group = rucksacks.Slice(groupOffset, groupSize);
             result += GetBadgePriority(group);
         }
 
