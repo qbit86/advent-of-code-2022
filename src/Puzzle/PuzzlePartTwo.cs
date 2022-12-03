@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
@@ -17,23 +18,9 @@ public sealed class PuzzlePartTwo : IPuzzle<long>
         return SolveCore(lines);
     }
 
-    private long SolveCore(List<string> lines)
-    {
-        const int groupSize = 3;
-        Span<string> rucksacks = CollectionsMarshal.AsSpan(lines);
-        int groupCount = lines.Count / groupSize;
-        long result = 0L;
-        for (int groupIndex = 0; groupIndex < groupCount; ++groupIndex)
-        {
-            int groupOffset = groupIndex * groupSize;
-            ReadOnlySpan<string> group = rucksacks.Slice(groupOffset, groupSize);
-            result += GetBadgePriority(group);
-        }
+    private long SolveCore(IReadOnlyList<string> lines) => lines.Chunk(3).Select(GetBadgePriority).Sum();
 
-        return result;
-    }
-
-    private int GetBadgePriority(ReadOnlySpan<string> rucksacks)
+    private int GetBadgePriority(string[] rucksacks)
     {
         int rucksackCount = rucksacks.Length;
         Span<int> maskByPriority = stackalloc int[Helpers.PriorityUpperBound];
