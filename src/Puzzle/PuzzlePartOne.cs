@@ -15,5 +15,5 @@ public sealed class PuzzlePartOne : IPuzzle<long>
         return SolveCore(lines);
     }
 
-    private long SolveCore(IReadOnlyList<string> lines) => throw new NotImplementedException();
+    private static long SolveCore(IReadOnlyList<string> lines) => throw new NotImplementedException();
 }
