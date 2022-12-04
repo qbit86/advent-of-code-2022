@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace AdventOfCode2022;
@@ -15,5 +16,11 @@ public sealed class PuzzlePartOne : IPuzzle<long>
         return SolveCore(lines);
     }
 
-    private static long SolveCore(IReadOnlyList<string> lines) => throw new NotImplementedException();
+    private static long SolveCore(IReadOnlyList<string> lines) =>
+        lines.Select(Helpers.ParsePair).Count(pair => FullyOverlap(pair.Item1, pair.Item2));
+
+    private static bool FullyOverlap(Range left, Range right) => Contains(left, right) || Contains(right, left);
+
+    private static bool Contains(Range left, Range right) =>
+        left.Start.Value <= right.Start.Value && right.End.Value <= left.End.Value;
 }
