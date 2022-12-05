@@ -37,12 +37,6 @@ public sealed class PuzzlePartTwo : IPuzzle<string>
             }
         }
 
-        return string.Create(problemData.StackCount, problemData, SpanAction);
-
-        static void SpanAction(Span<char> span, ProblemData data)
-        {
-            for (int i = 0; i < data.StackCount; ++i)
-                span[i] = data.Stacks[i].Peek();
-        }
+        return string.Create(problemData.StackCount, problemData, Puzzles.PopulateSpan);
     }
 }
