@@ -7,17 +7,19 @@ namespace AdventOfCode2022;
 public sealed class Tests
 {
     [Theory]
-    [InlineData("sample-input.txt", 0L)]
-    internal async Task PartOne(string inputPath, long expected)
+    [InlineData("sample-input.txt", "CMZ")]
+    [InlineData("input.txt", "QGTHFZBHV")]
+    internal async Task PartOne(string inputPath, string expected)
     {
         using StreamReader input = new(inputPath, Encoding.UTF8);
         var actual = await Puzzles.PartOne.SolveAsync(input).ConfigureAwait(false);
         Assert.Equal(expected, actual);
     }
 
-    [Theory(Skip = "Not implemented yet")]
-    [InlineData("sample-input.txt", 0L)]
-    internal async Task PartTwo(string inputPath, long expected)
+    [Theory]
+    [InlineData("sample-input.txt", "MCD")]
+    [InlineData("input.txt", "MGDMPSZTM")]
+    internal async Task PartTwo(string inputPath, string expected)
     {
         using StreamReader input = new(inputPath, Encoding.UTF8);
         var actual = await Puzzles.PartTwo.SolveAsync(input).ConfigureAwait(false);
