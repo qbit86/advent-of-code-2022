@@ -22,7 +22,6 @@ public sealed class PuzzlePartTwo : IPuzzle<string>
         {
             int count = instruction.Count;
             Stack<char> from = problemData.Stacks[instruction.From];
-            Stack<char> to = problemData.Stacks[instruction.To];
             Stack<char> temp = new(count);
             for (int i = 0; i < count; ++i)
             {
@@ -30,6 +29,7 @@ public sealed class PuzzlePartTwo : IPuzzle<string>
                 temp.Push(crate);
             }
 
+            Stack<char> to = problemData.Stacks[instruction.To];
             for (int i = 0; i < count; ++i)
             {
                 char crate = temp.Pop();
