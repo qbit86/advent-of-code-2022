@@ -7,7 +7,8 @@ namespace AdventOfCode2022;
 public sealed class Tests
 {
     [Theory]
-    [InlineData("sample-input.txt", 0L)]
+    [InlineData("sample-input.txt", 13140L)]
+    [InlineData("input.txt", 11720L)]
     internal async Task PartOne(string inputPath, long expected)
     {
         using StreamReader input = new(inputPath, Encoding.UTF8);
@@ -15,9 +16,12 @@ public sealed class Tests
         Assert.Equal(expected, actual);
     }
 
-    [Theory(Skip = "Not implemented yet")]
-    [InlineData("sample-input.txt", 0L)]
-    internal async Task PartTwo(string inputPath, long expected)
+    [Theory]
+    [InlineData("sample-input.txt",
+        "##..##..##..##..##..##..##..##..##..##..###...###...###...###...###...###...###.####....####....####....####....####....#####.....#####.....#####.....#####.....######......######......######......###########.......#######.......#######.....")]
+    [InlineData("input.txt",
+        "####.###...##..###..####.###...##....##.#....#..#.#..#.#..#.#....#..#.#..#....#.###..#..#.#....#..#.###..#..#.#.......#.#....###..#....###..#....###..#.......#.#....#.#..#..#.#.#..#....#....#..#.#..#.####.#..#..##..#..#.####.#.....##...##..")]
+    internal async Task PartTwo(string inputPath, string expected)
     {
         using StreamReader input = new(inputPath, Encoding.UTF8);
         var actual = await Puzzles.PartTwo.SolveAsync(input).ConfigureAwait(false);

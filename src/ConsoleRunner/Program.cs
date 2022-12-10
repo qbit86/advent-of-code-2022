@@ -17,8 +17,7 @@ catch (NotImplementedException)
 try
 {
     using StreamReader input = new("input.txt", Encoding.UTF8);
-    long result = await Puzzles.PartTwo.SolveAsync(input).ConfigureAwait(false);
-    Console.WriteLine(result);
+    await Puzzles.PartTwo.SolveAndWriteAsync(input, Console.Out).ConfigureAwait(false);
 }
 catch (NotImplementedException)
 {
