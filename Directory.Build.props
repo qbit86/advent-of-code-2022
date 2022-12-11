@@ -2,6 +2,7 @@
   <PropertyGroup>
     <AnalysisLevel>latest</AnalysisLevel>
     <AnalysisMode>All</AnalysisMode>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <ImplicitUsings>disable</ImplicitUsings>
     <LangVersion>latest</LangVersion>
