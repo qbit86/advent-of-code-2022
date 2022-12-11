@@ -7,7 +7,8 @@ namespace AdventOfCode2022;
 public sealed class Tests
 {
     [Theory]
-    [InlineData("sample-input.txt", 0L)]
+    [InlineData("sample-input.txt", 10605L)]
+    [InlineData("input.txt", 58322L)]
     internal async Task PartOne(string inputPath, long expected)
     {
         using StreamReader input = new(inputPath, Encoding.UTF8);
@@ -15,8 +16,9 @@ public sealed class Tests
         Assert.Equal(expected, actual);
     }
 
-    [Theory(Skip = "Not implemented yet")]
-    [InlineData("sample-input.txt", 0L)]
+    [Theory]
+    [InlineData("sample-input.txt", 2713310158L)]
+    [InlineData("input.txt", 13937702909L)]
     internal async Task PartTwo(string inputPath, long expected)
     {
         using StreamReader input = new(inputPath, Encoding.UTF8);
