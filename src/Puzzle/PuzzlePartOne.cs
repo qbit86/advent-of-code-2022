@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -15,5 +16,17 @@ public sealed class PuzzlePartOne : IPuzzle<long>
         return SolveCore(lines);
     }
 
-    private static long SolveCore(IReadOnlyList<string> lines) => throw new NotImplementedException();
+    private static long SolveCore(IReadOnlyList<string> lines)
+    {
+        HashSet<Point> sandUnits = new();
+        var simulation = SimulationPartOne.Create(lines, sandUnits);
+        Point initialPosition = new(500, 0);
+        for (long result = 0L;; ++result)
+        {
+            if (simulation.TrySimulateSandUnit(initialPosition, out Point finalPosition))
+                sandUnits.Add(finalPosition);
+            else
+                return result;
+        }
+    }
 }
