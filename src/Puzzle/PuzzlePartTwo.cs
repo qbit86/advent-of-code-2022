@@ -24,6 +24,8 @@ public sealed class PuzzlePartTwo : IPuzzle<long>
         KeyValuePair<int, long>[] workingCopy =
             valueByOriginalIndex.Select((value, key) => KeyValuePair.Create(key, value)).ToArray();
         int count = valueByOriginalIndex.Length;
+        if (count is 0)
+            throw new ArgumentException(nameof(count), nameof(lines));
         int divisor = count - 1;
         for (int round = 0; round < 10; ++round)
         {
@@ -61,9 +63,9 @@ public sealed class PuzzlePartTwo : IPuzzle<long>
         int indexOfZero = Array.IndexOf(mixedArrangement, 0);
         if (indexOfZero < 0)
             throw new InvalidOperationException($"{nameof(indexOfZero)} < 0");
-        int wrapped1000 = Mod(indexOfZero + 1000, count);
-        int wrapped2000 = Mod(indexOfZero + 2000, count);
-        int wrapped3000 = Mod(indexOfZero + 3000, count);
+        int wrapped1000 = (indexOfZero + 1000) % count;
+        int wrapped2000 = (indexOfZero + 2000) % count;
+        int wrapped3000 = (indexOfZero + 3000) % count;
         return mixedArrangement[wrapped1000] + mixedArrangement[wrapped2000] + mixedArrangement[wrapped3000];
     }
 }
