@@ -3,6 +3,7 @@ using System.IO;
 using System.Text;
 using AdventOfCode2022;
 
+#if false
 try
 {
     using StreamReader input = new("input.txt", Encoding.UTF8);
@@ -13,6 +14,7 @@ catch (NotImplementedException)
 {
     Console.Error.WriteLine(nameof(NotImplementedException));
 }
+#endif
 
 try
 {
