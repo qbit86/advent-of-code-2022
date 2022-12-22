@@ -7,7 +7,8 @@ namespace AdventOfCode2022;
 public sealed class Tests
 {
     [Theory]
-    [InlineData("sample-input.txt", 0L)]
+    [InlineData("sample-input.txt", 64L)]
+    [InlineData("input.txt", 3550L)]
     internal async Task PartOne(string inputPath, long expected)
     {
         using StreamReader input = new(inputPath, Encoding.UTF8);
@@ -15,11 +16,30 @@ public sealed class Tests
         Assert.Equal(expected, actual);
     }
 
-    [Theory(Skip = "Not implemented yet")]
-    [InlineData("sample-input.txt", 0L)]
+    [Theory]
+    [InlineData("1,1,1\r\n2,1,1", 10L)]
+    internal async Task PartOne_DirectInput(string inputContent, long expected)
+    {
+        using StringReader input = new(inputContent);
+        var actual = await Puzzles.PartOne.SolveAsync(input).ConfigureAwait(false);
+        Assert.Equal(expected, actual);
+    }
+
+    [Theory]
+    [InlineData("sample-input.txt", 58L)]
+    [InlineData("input.txt", 2028L)]
     internal async Task PartTwo(string inputPath, long expected)
     {
         using StreamReader input = new(inputPath, Encoding.UTF8);
+        var actual = await Puzzles.PartTwo.SolveAsync(input).ConfigureAwait(false);
+        Assert.Equal(expected, actual);
+    }
+
+    [Theory]
+    [InlineData("1,1,1\r\n2,1,1", 10L)]
+    internal async Task PartTwo_DirectInput(string inputContent, long expected)
+    {
+        using StringReader input = new(inputContent);
         var actual = await Puzzles.PartTwo.SolveAsync(input).ConfigureAwait(false);
         Assert.Equal(expected, actual);
     }
