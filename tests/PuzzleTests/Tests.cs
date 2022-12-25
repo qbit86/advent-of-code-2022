@@ -54,15 +54,4 @@ public sealed class Tests
         var actual = Puzzles.ConvertFromQuinary(numberInQuinary);
         Assert.Equal(expected, actual);
     }
-
-#if false
-    [Theory]
-    [InlineData(4890, "2=-1=0")]
-    [InlineData(976, "2=-01")]
-    internal void ToQuinary(int number, string expected)
-    {
-        var actual = Puzzles.ConvertToQuinary(number);
-        Assert.Equal(expected, actual);
-    }
-#endif
 }

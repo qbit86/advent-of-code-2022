@@ -6,11 +6,6 @@ namespace AdventOfCode2022;
 public static class Puzzles
 {
     public static PuzzlePartOne PartOne { get; } = new();
-    public static PuzzlePartTwo PartTwo { get; } = new();
-
-#if false
-    public static string ConvertToQuinary(int number) => throw new NotImplementedException();
-#endif
 
     public static long ConvertFromQuinary(string numberInQuinary)
     {
