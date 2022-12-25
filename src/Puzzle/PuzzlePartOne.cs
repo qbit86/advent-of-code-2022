@@ -7,13 +7,21 @@ namespace AdventOfCode2022;
 
 public sealed class PuzzlePartOne : IPuzzle<long>
 {
+    private readonly int _rockCount;
+
+    public PuzzlePartOne(int rockCount) => _rockCount = rockCount;
+
     public async Task<long> SolveAsync(TextReader input)
     {
         ArgumentNullException.ThrowIfNull(input);
-        List<string> lines = new();
-        await input.ReadAllLinesAsync(lines).ConfigureAwait(false);
-        return SolveCore(lines);
+        string? line = await input.ReadLineAsync().ConfigureAwait(false);
+        return SolveCore(line ?? throw new ArgumentException(null, nameof(input)));
     }
 
-    private static long SolveCore(IReadOnlyList<string> lines) => throw new NotImplementedException();
+    private long SolveCore(string jets)
+    {
+        List<byte> stoppedBlocks = new(_rockCount);
+        SimulatorSlim simulator = new(jets, stoppedBlocks);
+        return simulator.Simulate(0, 0, _rockCount, out _);
+    }
 }

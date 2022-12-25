@@ -6,18 +6,8 @@ using AdventOfCode2022;
 try
 {
     using StreamReader input = new("input.txt", Encoding.UTF8);
-    long result = await Puzzles.PartOne.SolveAsync(input).ConfigureAwait(false);
-    Console.WriteLine(result);
-}
-catch (NotImplementedException)
-{
-    Console.Error.WriteLine(nameof(NotImplementedException));
-}
-
-try
-{
-    using StreamReader input = new("input.txt", Encoding.UTF8);
-    long result = await Puzzles.PartTwo.SolveAsync(input).ConfigureAwait(false);
+    PuzzlePartTwo puzzle = new(1000000000000L);
+    long result = await puzzle.SolveAsync(input).ConfigureAwait(false);
     Console.WriteLine(result);
 }
 catch (NotImplementedException)
