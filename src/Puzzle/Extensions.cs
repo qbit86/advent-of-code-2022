@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -21,4 +22,8 @@ internal static class Extensions
             lines.Add(line);
         }
     }
+
+    internal static Point Add(this Point position, Size direction) => Point.Add(position, direction);
+
+    internal static int Mod(this int dividend, int divisor) => (dividend % divisor + divisor) % divisor;
 }
