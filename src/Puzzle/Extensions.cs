@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace AdventOfCode2022;
 
-internal static class TextReaderExtensions
+internal static class Extensions
 {
     internal static async Task ReadAllLinesAsync<TLines>(this TextReader input, TLines lines)
         where TLines : ICollection<string>
