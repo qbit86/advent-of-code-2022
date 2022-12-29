@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -21,4 +22,17 @@ internal static class Extensions
             lines.Add(line);
         }
     }
+
+    internal static RadiusRecord Radius(this SensorRecord sensorRecord)
+    {
+        int distance = sensorRecord.SensorPosition.ManhattanDistance(sensorRecord.BeaconPosition);
+        return new(sensorRecord.SensorPosition, distance);
+    }
+
+    internal static int ManhattanDistance(this Point position, Point other) =>
+        Math.Abs(other.X - position.X) + Math.Abs(other.Y - position.Y);
+
+    internal static Size Subtract(this Point left, Point right) => new Size(left) - new Size(right);
+
+    internal static int Cross(this Size left, Size right) => left.Width * right.Height - left.Height * right.Width;
 }
