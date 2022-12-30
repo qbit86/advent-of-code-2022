@@ -5,15 +5,15 @@ using System.Threading.Tasks;
 
 namespace AdventOfCode2022;
 
-public sealed class PuzzlePartTwo : IPuzzle<long>
+public sealed class PuzzlePartTwo
 {
     public async Task<long> SolveAsync(TextReader input)
     {
         ArgumentNullException.ThrowIfNull(input);
         List<string> lines = new();
         await input.ReadAllLinesAsync(lines).ConfigureAwait(false);
-        return SolveCore(lines);
+        return Solve(lines);
     }
 
-    private static long SolveCore(IReadOnlyList<string> lines) => throw new NotImplementedException();
+    private static long Solve(IReadOnlyList<string> lines) => throw new NotImplementedException();
 }
