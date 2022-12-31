@@ -1,26 +1,11 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 using AdventOfCode2022;
 
-try
-{
-    using StreamReader input = new("input.txt", Encoding.UTF8);
-    long result = await Puzzles.PartOne.SolveAsync(input).ConfigureAwait(false);
-    Console.WriteLine(result);
-}
-catch (NotImplementedException)
-{
-    Console.Error.WriteLine(nameof(NotImplementedException));
-}
-
-try
-{
-    using StreamReader input = new("input.txt", Encoding.UTF8);
-    long result = await Puzzles.PartTwo.SolveAsync(input).ConfigureAwait(false);
-    Console.WriteLine(result);
-}
-catch (NotImplementedException)
-{
-    Console.Error.WriteLine(nameof(NotImplementedException));
-}
+using StreamReader input = new("input.txt", Encoding.UTF8);
+var stopwatch = Stopwatch.StartNew();
+long result = await Puzzles.PartTwo.SolveAsync(input).ConfigureAwait(false);
+Console.WriteLine(stopwatch.Elapsed);
+Console.WriteLine(result);
