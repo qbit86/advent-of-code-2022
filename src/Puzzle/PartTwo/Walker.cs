@@ -10,16 +10,16 @@ namespace AdventOfCode2022.PartTwo;
 internal sealed class Walker
 {
     private readonly CubeStepMaker _cubeStepMaker;
-    private readonly Dictionary<Vector3, FaceRecord> _faceRecordByFaceNormal;
     private readonly string[] _tileKindByPosition;
+    private readonly UvMapping _uvMapping;
 
     private Walker(string[] tileKindByPosition,
         CubeStepMaker cubeStepMaker,
-        Dictionary<Vector3, FaceRecord> faceRecordByFaceNormal)
+        UvMapping uvMapping)
     {
         _cubeStepMaker = cubeStepMaker;
         _tileKindByPosition = tileKindByPosition;
-        _faceRecordByFaceNormal = faceRecordByFaceNormal;
+        _uvMapping = uvMapping;
     }
 
     internal int FaceSize => _cubeStepMaker.UpperBoundExclusive;
@@ -40,79 +40,9 @@ internal sealed class Walker
         int faceSize = (int)gcd;
         CubeStepMaker cubeStepMaker = new(faceSize);
 
-        Dictionary<Vector3, FaceRecord> faceRecordByFaceNormal =
-            CreateFaceRecordByFaceNormal(faceSize, tileKindByPosition);
+        var uvMapping = UvMapping.Create(tileKindByPosition, faceSize);
 
-        return new(tileKindByPosition, cubeStepMaker, faceRecordByFaceNormal);
-    }
-
-    private static Dictionary<Vector3, FaceRecord> CreateFaceRecordByFaceNormal(
-        int faceSize, IReadOnlyList<string> tileKindByPosition)
-    {
-        // Sample:      Input:
-        // ()()██()     ()████
-        // ██████()     ()██()
-        // ()()████     ████()
-        //              ██()()
-
-        // TODO: Replace with actual input.
-        if (faceSize == 4)
-        {
-            return new(6)
-            {
-                { Vector3.UnitZ, new(Vector3.UnitZ, new(8, 0), new(0, 0, 3), Vector3.UnitX) },
-                { Vector3.UnitY, new(Vector3.UnitY, new(8, 4), new(0, 3, 3), Vector3.UnitX) },
-                { -Vector3.UnitX, new(-Vector3.UnitX, new(4, 4), new(0, 0, 3), Vector3.UnitY) },
-                { -Vector3.UnitY, new(-Vector3.UnitY, new(0, 4), new(3, 0, 3), -Vector3.UnitX) },
-                { -Vector3.UnitZ, new(-Vector3.UnitZ, new(8, 8), new(0, 3, 0), Vector3.UnitX) },
-                { Vector3.UnitX, new(Vector3.UnitX, new(12, 8), new(3, 3, 0), Vector3.UnitZ) }
-            };
-        }
-
-        if (faceSize == 50)
-        {
-            return new(6)
-            {
-                { Vector3.UnitZ, new(Vector3.UnitZ, new(50, 0), new(0, 0, 49), Vector3.UnitX) },
-                { Vector3.UnitX, new(Vector3.UnitX, new(100, 0), new(49, 0, 49), -Vector3.UnitZ) },
-                { Vector3.UnitY, new(Vector3.UnitY, new(50, 50), new(0, 49, 49), Vector3.UnitX) },
-                { -Vector3.UnitZ, new(-Vector3.UnitZ, new(50, 100), new(0, 49, 0), Vector3.UnitX) },
-                { -Vector3.UnitX, new(-Vector3.UnitX, new(0, 100), new(0, 49, 49), -Vector3.UnitZ) },
-                { -Vector3.UnitY, new(-Vector3.UnitY, new(0, 150), new(0, 0, 49), -Vector3.UnitZ) }
-            };
-        }
-
-        PlanarState sourcePlanarState = new(Puzzles.FindInitialPosition(tileKindByPosition), 0);
-        SpatialState sourceSpatialState = new((faceSize - 1) * Vector3.UnitZ, Vector3.UnitZ, Vector3.UnitX);
-        Node source = new(sourcePlanarState, sourceSpatialState, Vector3.UnitX);
-        HashSet<Node> explored = new(6) { source };
-        Stack<Node> frontier = new(6);
-        frontier.Push(source);
-        while (frontier.TryPop(out Node current))
-        {
-            Debug.Assert(explored.Contains(current));
-            (PlanarState planarState, SpatialState spatialState, Vector3 orientation) = current;
-            do
-            {
-                PlanarState neighborPlanarStateCandidate = planarState.MakeStepUnchecked(faceSize);
-                if (!IsValid(tileKindByPosition, neighborPlanarStateCandidate.Position))
-                    break;
-                SpatialState neighborSpatialStateCandidate = spatialState.MakeStepUnchecked(faceSize);
-                if (!CubeStepMaker.IsInsideBounds(neighborSpatialStateCandidate.Position, faceSize))
-                    throw new NotImplementedException();
-                Node neighbor = new(planarState, spatialState, orientation);
-                if (!explored.Contains(neighbor))
-                {
-                    explored.Add(neighbor);
-                    frontier.Push(neighbor);
-                }
-            } while (false);
-            throw new NotImplementedException();
-        }
-
-        var faceRecordByFaceNormal = explored.ToDictionary(
-            it => it.SpatialState.Normal, it => it.CreateFaceRecord());
-        return faceRecordByFaceNormal;
+        return new(tileKindByPosition, cubeStepMaker, uvMapping);
     }
 
     internal State TurnThenWalk(in State state, char turnDirection, int stepCount)
@@ -133,7 +63,7 @@ internal sealed class Walker
         for (int i = 0; i < stepCount; ++i)
         {
             SpatialState spatialStateCandidate = _cubeStepMaker.MakeStep(spatialState);
-            FaceRecord faceRecordCandidate = _faceRecordByFaceNormal[spatialStateCandidate.Normal];
+            FaceRecord faceRecordCandidate = _uvMapping[spatialStateCandidate.Normal];
             Debug.Assert(faceRecordCandidate.Normal == spatialStateCandidate.Normal);
             Point planarPositionCandidate = faceRecordCandidate.GetPlanarPosition(spatialStateCandidate.Position);
             char tileKind = _tileKindByPosition[planarPositionCandidate.Y][planarPositionCandidate.X];
@@ -160,16 +90,6 @@ internal sealed class Walker
         if (endDirection.Rotate(normal) == startDirection)
             return 3;
         throw new UnreachableException();
-    }
-
-    private static bool IsValid(IReadOnlyList<string> tileKindByPosition, Point position)
-    {
-        if (unchecked((uint)position.Y >= tileKindByPosition.Count))
-            return false;
-        string row = tileKindByPosition[position.Y];
-        if (unchecked((uint)position.X >= row.Length))
-            return false;
-        return row[position.X] is '.' or '#';
     }
 }
 

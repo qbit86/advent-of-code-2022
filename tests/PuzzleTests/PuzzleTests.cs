@@ -7,7 +7,7 @@ using AdventOfCode2022.PartTwo;
 
 namespace AdventOfCode2022;
 
-public sealed class Tests
+public sealed class PuzzleTests
 {
     [Theory]
     [InlineData("sample-input.txt", 6032L)]
