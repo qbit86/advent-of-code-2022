@@ -61,9 +61,12 @@ public readonly struct UvMapping : IReadOnlyDictionary<Vector3, FaceRecord>
                     ? spatialState.MakeStepUnchecked(faceSize - 1).WrapAroundEdge()
                     : spatialState.WrapAroundEdge().MakeStepUnchecked(faceSize - 1);
             Debug.Assert(CubeStepMaker.IsInsideBounds(neighborSpatialState.Position, faceSize));
-            Vector3 neighborOrientation = Vector3.Dot(orientation, spatialState.Direction) is 0
-                ? orientation
-                : orientation.Rotate(Vector3.Cross(spatialState.Normal, spatialState.Direction));
+            Vector3 neighborOrientation = Vector3.Dot(orientation, spatialState.Direction) switch
+            {
+                0 => orientation,
+                1 or -1 => orientation.Rotate(Vector3.Cross(spatialState.Normal, spatialState.Direction)),
+                _ => throw new UnreachableException()
+            };
             Node neighbor = new(neighborPlanarState, neighborSpatialState, neighborOrientation);
             if (!explored.Contains(neighbor))
             {
