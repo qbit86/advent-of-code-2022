@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using System.Diagnostics;
 using AdventOfCode2022.PartOne;
 using AdventOfCode2022.PartTwo;
 using Arborescence;
+using Arborescence.Traversal;
 
 namespace AdventOfCode2022;
 
@@ -15,50 +15,11 @@ public static class Puzzles
         where TGraph : IHeadIncidence<TNode, TNode>, IOutEdgesIncidence<TNode, IEnumerator<TNode>>
         where TNode : INode
     {
-        // TODO: Implement with GenericSearch<>.
-        HashSet<TNode> exploredSet = new() { source };
-        yield return source;
-        PriorityQueue<TNode, TNode> frontier = new(NodePriorityComparer<TNode>.Instance);
-        frontier.Enqueue(source, source);
-        while (frontier.TryDequeue(out TNode? current, out _))
-        {
-            Debug.Assert(exploredSet.Contains(current));
-            IEnumerator<TNode> neighbourEnumerator = graph.EnumerateOutEdges(current);
-            while (neighbourEnumerator.MoveNext())
-            {
-                TNode neighbor = neighbourEnumerator.Current;
-                if (!exploredSet.Contains(neighbor))
-                {
-                    exploredSet.Add(neighbor);
-                    yield return neighbor;
-                    frontier.Enqueue(neighbor, neighbor);
-                }
-            }
-        }
+        GenericSearch<TGraph, TNode, TNode, IEnumerator<TNode>> search = new();
+        HashSet<TNode> exploredSet = new();
+        Frontier<TNode> frontier = new(NodePriorityComparer<TNode>.Instance);
+        IEnumerator<TNode> enumerator = search.EnumerateVertices(graph, source, frontier, exploredSet);
+        while (enumerator.MoveNext())
+            yield return enumerator.Current;
     }
-}
-
-internal sealed class NodePriorityComparer<TNode> : IComparer<TNode>
-    where TNode : INode
-{
-    internal static NodePriorityComparer<TNode> Instance { get; } = new();
-
-    public int Compare(TNode? x, TNode? y)
-    {
-        TNode left = x!;
-        if (left.DepthLeft == 0)
-            return -1;
-        TNode right = y!;
-        if (right.DepthLeft == 0)
-            return 1;
-        int guaranteedComparison =
-            GuaranteedTotalPressureReleased(right).CompareTo(GuaranteedTotalPressureReleased(left));
-        if (guaranteedComparison != 0)
-            return guaranteedComparison;
-        int openBitsetComparison = ulong.PopCount(left.OpenBitset).CompareTo(ulong.PopCount(right.OpenBitset));
-        return openBitsetComparison;
-    }
-
-    private static int GuaranteedTotalPressureReleased(TNode node) =>
-        node.TotalPressureReleased + node.TotalFlowRate * node.DepthLeft;
 }
