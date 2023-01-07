@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
@@ -11,7 +10,7 @@ namespace AdventOfCode2022;
 
 internal readonly record struct Node(Point Position, int Time);
 
-internal sealed class Graph : IIncidenceGraph<Node, Node, IEnumerator<Node>>
+internal sealed class Graph : ITraversable<Node, Node, IEnumerator<Node>>
 {
     private static readonly Size[] s_directions = { D.UnitX, D.UnitY, D.MinusUnitX, D.MinusUnitY, Size.Empty };
     private static readonly HashSet<Point> s_reusableSet = new();
@@ -33,8 +32,6 @@ internal sealed class Graph : IIncidenceGraph<Node, Node, IEnumerator<Node>>
     internal Point Goal { get; }
 
     public bool TryGetHead(Node edge, [UnscopedRef] out Node head) => Some(edge, out head);
-
-    public bool TryGetTail(Node edge, [UnscopedRef] out Node tail) => throw new NotSupportedException();
 
     public IEnumerator<Node> EnumerateOutEdges(Node vertex)
     {
