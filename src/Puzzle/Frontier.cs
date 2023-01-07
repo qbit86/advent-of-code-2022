@@ -6,13 +6,12 @@ using System.Collections.Generic;
 namespace AdventOfCode2022;
 
 internal sealed class Frontier<TNode> : IProducerConsumerCollection<TNode>
-    where TNode : INode
 {
     private readonly PriorityQueue<TNode, TNode> _priorityQueue;
 
     private Frontier(PriorityQueue<TNode, TNode> priorityQueue) => _priorityQueue = priorityQueue;
 
-    internal Frontier(NodePriorityComparer<TNode> comparer) : this(new PriorityQueue<TNode, TNode>(comparer)) { }
+    internal Frontier(IComparer<TNode> comparer) : this(new PriorityQueue<TNode, TNode>(comparer)) { }
 
     public IEnumerator<TNode> GetEnumerator() => throw new NotSupportedException();
 
