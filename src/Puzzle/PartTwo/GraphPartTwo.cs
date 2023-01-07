@@ -7,7 +7,7 @@ using Arborescence;
 
 namespace AdventOfCode2022.PartTwo;
 
-internal sealed class GraphPartTwo : IIncidenceGraph<NodePartTwo, NodePartTwo, IEnumerator<NodePartTwo>>
+internal sealed class GraphPartTwo : ITraversable<NodePartTwo, NodePartTwo, IEnumerator<NodePartTwo>>
 {
     private readonly int _totalFlowRate;
     private readonly IReadOnlyList<ValveRecord> _valveRecordById;
@@ -29,8 +29,6 @@ internal sealed class GraphPartTwo : IIncidenceGraph<NodePartTwo, NodePartTwo, I
         head = edge;
         return true;
     }
-
-    public bool TryGetTail(NodePartTwo edge, [UnscopedRef] out NodePartTwo tail) => throw new NotSupportedException();
 
     public IEnumerator<NodePartTwo> EnumerateOutEdges(NodePartTwo vertex)
     {

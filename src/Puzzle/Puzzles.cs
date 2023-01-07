@@ -12,13 +12,13 @@ public static class Puzzles
     public static PuzzlePartTwo PartTwo { get; } = new();
 
     internal static IEnumerable<TNode> Traverse<TGraph, TNode>(TGraph graph, TNode source)
-        where TGraph : IIncidenceGraph<TNode, TNode, IEnumerator<TNode>>
+        where TGraph : IHeadIncidence<TNode, TNode>, IOutEdgesIncidence<TNode, IEnumerator<TNode>>
         where TNode : INode
     {
         // TODO: Implement with GenericSearch<>.
         HashSet<TNode> exploredSet = new() { source };
         yield return source;
-        PriorityQueue<TNode, TNode> frontier = new(NodePriorityComparer<TGraph, TNode>.Instance);
+        PriorityQueue<TNode, TNode> frontier = new(NodePriorityComparer<TNode>.Instance);
         frontier.Enqueue(source, source);
         while (frontier.TryDequeue(out TNode? current, out _))
         {
@@ -38,11 +38,10 @@ public static class Puzzles
     }
 }
 
-internal sealed class NodePriorityComparer<TGraph, TNode> : IComparer<TNode>
-    where TGraph : IIncidenceGraph<TNode, TNode, IEnumerator<TNode>>
+internal sealed class NodePriorityComparer<TNode> : IComparer<TNode>
     where TNode : INode
 {
-    internal static NodePriorityComparer<TGraph, TNode> Instance { get; } = new();
+    internal static NodePriorityComparer<TNode> Instance { get; } = new();
 
     public int Compare(TNode? x, TNode? y)
     {
