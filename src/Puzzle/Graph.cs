@@ -8,7 +8,7 @@ using Arborescence;
 
 namespace AdventOfCode2022;
 
-internal sealed class Graph : IIncidenceGraph<Vector3, Vector3, IEnumerator<Vector3>>
+internal sealed class Graph : ITraversable<Vector3, Vector3, IEnumerator<Vector3>>
 {
     private readonly IReadOnlySet<Vector3> _cubes;
     private readonly Vector3 _max;
@@ -22,8 +22,6 @@ internal sealed class Graph : IIncidenceGraph<Vector3, Vector3, IEnumerator<Vect
     }
 
     public bool TryGetHead(Vector3 edge, [UnscopedRef] out Vector3 head) => Some(edge, out head);
-
-    public bool TryGetTail(Vector3 edge, [UnscopedRef] out Vector3 tail) => throw new NotSupportedException();
 
     public IEnumerator<Vector3> EnumerateOutEdges(Vector3 vertex)
     {
