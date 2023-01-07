@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
@@ -7,11 +6,9 @@ using Arborescence;
 namespace AdventOfCode2022;
 
 internal sealed record Graph(Blueprint Blueprint, int ElapsedMinutesBound) :
-    IIncidenceGraph<Node, Node, IEnumerator<Node>>
+    ITraversable<Node, Node, IEnumerator<Node>>
 {
     public bool TryGetHead(Node edge, [UnscopedRef] out Node head) => Some(edge, out head);
-
-    public bool TryGetTail(Node edge, [UnscopedRef] out Node tail) => throw new NotSupportedException();
 
     public IEnumerator<Node> EnumerateOutEdges(Node vertex)
     {
