@@ -6,9 +6,9 @@ using Arborescence;
 namespace AdventOfCode2022;
 
 internal sealed record Graph(Blueprint Blueprint, int ElapsedMinutesBound) :
-    ITraversable<Node, Node, IEnumerator<Node>>
+    IForwardIncidence<Node, Node, IEnumerator<Node>>
 {
-    public bool TryGetHead(Node edge, [UnscopedRef] out Node head) => Some(edge, out head);
+    public bool TryGetHead(Node edge, out Node head) => Some(edge, out head);
 
     public IEnumerator<Node> EnumerateOutEdges(Node vertex)
     {
