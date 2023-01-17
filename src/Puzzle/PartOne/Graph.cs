@@ -1,13 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Arborescence;
 
 namespace AdventOfCode2022.PartOne;
 
-internal sealed class Graph : ITraversable<Node, Node, IEnumerator<Node>>
+internal sealed class Graph : IAdjacency<Node, IEnumerator<Node>>
 {
     private readonly int _totalFlowRate;
     private readonly IReadOnlyList<ValveRecord> _valveRecordById;
@@ -24,13 +23,7 @@ internal sealed class Graph : ITraversable<Node, Node, IEnumerator<Node>>
         _totalFlowRate = totalFlowRate;
     }
 
-    public bool TryGetHead(Node edge, [UnscopedRef] out Node head)
-    {
-        head = edge;
-        return true;
-    }
-
-    public IEnumerator<Node> EnumerateOutEdges(Node vertex)
+    public IEnumerator<Node> EnumerateNeighbors(Node vertex)
     {
         Debug.Assert(vertex.DepthLeft >= 0);
         if (vertex.DepthLeft == 0)
