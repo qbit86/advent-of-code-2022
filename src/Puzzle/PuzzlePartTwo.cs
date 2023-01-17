@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
-using Arborescence.Traversal;
+using Arborescence.Traversal.Adjacency;
 
 namespace AdventOfCode2022;
 
@@ -21,12 +21,10 @@ public sealed class PuzzlePartTwo : IPuzzle<long>
     {
         Graph graph = Puzzles.Parse(lines);
 
-        EnumerableBfs<Graph, Node, Node, IEnumerator<Node>> bfs = new();
-
         Node firstStart = new(Graph.Start, 0);
         Node firstGoal = default;
         HashSet<Node> exploredSet = new();
-        IEnumerator<Node> firstTripEnumerator = bfs.EnumerateVertices(graph, firstStart, exploredSet);
+        IEnumerator<Node> firstTripEnumerator = EnumerableBfs<Node>.EnumerateVertices(graph, firstStart, exploredSet);
         while (firstTripEnumerator.MoveNext())
         {
             Node current = firstTripEnumerator.Current;
@@ -41,7 +39,7 @@ public sealed class PuzzlePartTwo : IPuzzle<long>
 
         Node secondStart = default;
         exploredSet.Clear();
-        IEnumerator<Node> secondTripEnumerator = bfs.EnumerateVertices(graph, firstGoal, exploredSet);
+        IEnumerator<Node> secondTripEnumerator = EnumerableBfs<Node>.EnumerateVertices(graph, firstGoal, exploredSet);
         while (secondTripEnumerator.MoveNext())
         {
             Node current = secondTripEnumerator.Current;
@@ -56,7 +54,7 @@ public sealed class PuzzlePartTwo : IPuzzle<long>
 
         Node secondGoal = default;
         exploredSet.Clear();
-        IEnumerator<Node> thirdTripEnumerator = bfs.EnumerateVertices(graph, secondStart, exploredSet);
+        IEnumerator<Node> thirdTripEnumerator = EnumerableBfs<Node>.EnumerateVertices(graph, secondStart, exploredSet);
         while (thirdTripEnumerator.MoveNext())
         {
             Node current = thirdTripEnumerator.Current;

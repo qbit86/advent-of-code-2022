@@ -1,16 +1,14 @@
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using Arborescence;
 
 namespace AdventOfCode2022;
 
 internal readonly record struct Node(Point Position, int Time);
 
-internal sealed class Graph : ITraversable<Node, Node, IEnumerator<Node>>
+internal sealed class Graph : IAdjacency<Node, IEnumerator<Node>>
 {
     private static readonly Size[] s_directions = { D.UnitX, D.UnitY, D.MinusUnitX, D.MinusUnitY, Size.Empty };
     private static readonly HashSet<Point> s_reusableSet = new();
@@ -31,9 +29,7 @@ internal sealed class Graph : ITraversable<Node, Node, IEnumerator<Node>>
     private Size Size { get; }
     internal Point Goal { get; }
 
-    public bool TryGetHead(Node edge, [UnscopedRef] out Node head) => Some(edge, out head);
-
-    public IEnumerator<Node> EnumerateOutEdges(Node vertex)
+    public IEnumerator<Node> EnumerateNeighbors(Node vertex)
     {
         (Point position, int time) = vertex;
         int newTime = time + 1;
@@ -83,11 +79,4 @@ internal sealed class Graph : ITraversable<Node, Node, IEnumerator<Node>>
     }
 
     private Point Wrap(Point position) => new(position.X.Mod(Size.Width), position.Y.Mod(Size.Height));
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static bool Some(Node valueToReturn, out Node value)
-    {
-        value = valueToReturn;
-        return true;
-    }
 }

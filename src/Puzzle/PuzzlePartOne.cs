@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Threading.Tasks;
-using Arborescence.Traversal;
+using Arborescence.Traversal.Adjacency;
 
 namespace AdventOfCode2022;
 
@@ -22,11 +22,9 @@ public sealed class PuzzlePartOne : IPuzzle<long>
     {
         Graph graph = Puzzles.Parse(lines);
 
-        EnumerableBfs<Graph, Node, Node, IEnumerator<Node>> bfs = new();
-        HashSet<Node> exploredSet = new();
         Node source = new(Graph.Start, 0);
         Point targetPosition = graph.Goal;
-        IEnumerator<Node> nodeEnumerator = bfs.EnumerateVertices(graph, source, exploredSet);
+        IEnumerator<Node> nodeEnumerator = EnumerableBfs<Node>.EnumerateVertices(graph, source);
         while (nodeEnumerator.MoveNext())
         {
             Node current = nodeEnumerator.Current;
