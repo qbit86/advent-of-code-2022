@@ -37,7 +37,7 @@ public sealed class PuzzlePartOne : IPuzzle<long>
             if (current == destination)
                 return distanceByVertex[current];
             Debug.Assert(predecessorByVertex[current].HasValue);
-            ArraySegment<Endpoints>.Enumerator edges = graph.EnumerateOutEdges(current);
+            ArraySegment<Int32Endpoints>.Enumerator edges = graph.EnumerateOutEdges(current);
             while (edges.MoveNext())
             {
                 int neighbor = edges.Current.Head;
