@@ -8,7 +8,7 @@ using Arborescence;
 
 namespace AdventOfCode2022;
 
-internal sealed class Graph : ITraversable<Vector3, Vector3, IEnumerator<Vector3>>
+internal sealed class Graph : IForwardIncidence<Vector3, Vector3, IEnumerator<Vector3>>
 {
     private readonly IReadOnlySet<Vector3> _cubes;
     private readonly Vector3 _max;
