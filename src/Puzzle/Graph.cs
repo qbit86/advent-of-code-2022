@@ -5,7 +5,7 @@ using static AdventOfCode2022.TryHelpers;
 
 namespace AdventOfCode2022;
 
-internal sealed class Graph : ITraversable<string, Expression, IEnumerator<Expression>>
+internal sealed class Graph : IForwardIncidence<string, Expression, IEnumerator<Expression>>
 {
     private readonly IReadOnlyDictionary<string, Expression> _expressionById;
 
