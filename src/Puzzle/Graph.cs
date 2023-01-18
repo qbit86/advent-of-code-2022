@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using Arborescence;
 using static AdventOfCode2022.TryHelpers;
 
@@ -11,7 +10,7 @@ internal sealed class Graph : IForwardIncidence<string, Expression, IEnumerator<
 
     internal Graph(IReadOnlyDictionary<string, Expression> expressionById) => _expressionById = expressionById;
 
-    public bool TryGetHead(Expression edge, [UnscopedRef] out string head) => Some(edge.Id, out head);
+    public bool TryGetHead(Expression edge, out string head) => Some(edge.Id, out head);
 
     public IEnumerator<Expression> EnumerateOutEdges(string vertex)
     {
