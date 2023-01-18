@@ -1,16 +1,12 @@
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Runtime.CompilerServices;
 using Arborescence;
 
 namespace AdventOfCode2022;
 
 internal sealed record Graph(Blueprint Blueprint, int ElapsedMinutesBound) :
-    IForwardIncidence<Node, Node, IEnumerator<Node>>
+    IAdjacency<Node, IEnumerator<Node>>
 {
-    public bool TryGetHead(Node edge, out Node head) => Some(edge, out head);
-
-    public IEnumerator<Node> EnumerateOutEdges(Node vertex)
+    public IEnumerator<Node> EnumerateNeighbors(Node vertex)
     {
         if (vertex.ElapsedMinutes == ElapsedMinutesBound)
             yield break;
@@ -72,12 +68,5 @@ internal sealed record Graph(Blueprint Blueprint, int ElapsedMinutesBound) :
     {
         remainingResources = availableResources - robotCost;
         return !remainingResources.IsNegativeForAnyComponent();
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static bool Some<T>(T valueToReturn, out T value)
-    {
-        value = valueToReturn;
-        return true;
     }
 }
