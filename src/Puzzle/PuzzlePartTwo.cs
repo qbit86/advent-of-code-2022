@@ -56,7 +56,7 @@ public sealed class PuzzlePartTwo : IPuzzle<long>
         Console.WriteLine($"{nameof(boundingCells)}: {boundingCells.Count}");
         HashSet<Vector3> exteriorCells = new();
         Graph graph = new(cubes, min, max);
-        IEnumerator<Vector3> enumerator = EnumerableDfs<Vector3, IEnumerator<Vector3>>.EnumerateVertices(
+        IEnumerator<Vector3> enumerator = EnumerableDfs<Vector3>.EnumerateVertices(
             graph, boundingCells.GetEnumerator(), exteriorCells);
         while (enumerator.MoveNext()) { }
 
