@@ -1,14 +1,11 @@
-using System;
 using System.Buffers;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
-using System.Runtime.CompilerServices;
 using Arborescence;
 
 namespace AdventOfCode2022;
 
-internal sealed class Graph : IForwardIncidence<Vector3, Vector3, IEnumerator<Vector3>>
+internal sealed class Graph : IAdjacency<Vector3, IEnumerator<Vector3>>
 {
     private readonly IReadOnlySet<Vector3> _cubes;
     private readonly Vector3 _max;
@@ -21,9 +18,7 @@ internal sealed class Graph : IForwardIncidence<Vector3, Vector3, IEnumerator<Ve
         _max = max;
     }
 
-    public bool TryGetHead(Vector3 edge, [UnscopedRef] out Vector3 head) => Some(edge, out head);
-
-    public IEnumerator<Vector3> EnumerateOutEdges(Vector3 vertex)
+    public IEnumerator<Vector3> EnumerateNeighbors(Vector3 vertex)
     {
         if (_cubes.Contains(vertex))
             yield break;
@@ -50,12 +45,5 @@ internal sealed class Graph : IForwardIncidence<Vector3, Vector3, IEnumerator<Ve
         {
             ArrayPool<Vector3>.Shared.Return(neighborCandidates);
         }
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static bool Some(Vector3 valueToReturn, out Vector3 value)
-    {
-        value = valueToReturn;
-        return true;
     }
 }

@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
-using Arborescence.Traversal;
+using Arborescence.Traversal.Adjacency;
 
 namespace AdventOfCode2022;
 
@@ -55,9 +55,9 @@ public sealed class PuzzlePartTwo : IPuzzle<long>
 
         Console.WriteLine($"{nameof(boundingCells)}: {boundingCells.Count}");
         HashSet<Vector3> exteriorCells = new();
-        EnumerableDfs<Graph, Vector3, Vector3, IEnumerator<Vector3>> dfs = new();
         Graph graph = new(cubes, min, max);
-        IEnumerator<Vector3> enumerator = dfs.EnumerateVertices(graph, boundingCells.GetEnumerator(), exteriorCells);
+        IEnumerator<Vector3> enumerator = EnumerableDfs<Vector3, IEnumerator<Vector3>>.EnumerateVertices(
+            graph, boundingCells.GetEnumerator(), exteriorCells);
         while (enumerator.MoveNext()) { }
 
         Console.WriteLine($"{nameof(exteriorCells)}: {exteriorCells.Count}");
