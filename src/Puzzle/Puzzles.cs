@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Arborescence.Traversal.Adjacency;
 
 namespace AdventOfCode2022;
@@ -12,18 +13,10 @@ public static class Puzzles
     {
         Graph graph = new(blueprint, elapsedMinutesBound);
         Node source = new(0, 1, 0, 0, 0, default);
-        IEnumerator<Node> nodesEnumerator = EnumerableDfs<Node>.EnumerateVertices(graph, source);
-        int result = default;
-        while (nodesEnumerator.MoveNext())
-        {
-            Node current = nodesEnumerator.Current;
-            if (current.ElapsedMinutes != graph.ElapsedMinutesBound)
-                continue;
-            int geodeCount = current.Resources.Geode;
-            if (geodeCount > result)
-                result = geodeCount;
-        }
-
-        return result;
+        IEnumerable<Node> nodes = EnumerableDfs<Node>.EnumerateVertices(graph, source);
+        IEnumerable<int> geodes = from node in nodes
+            where node.ElapsedMinutes == graph.ElapsedMinutesBound
+            select node.Resources.Geode;
+        return geodes.Max();
     }
 }
