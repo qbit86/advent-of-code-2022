@@ -16,8 +16,8 @@ public static class Puzzles
         where TNode : INode
     {
         Frontier<TNode> frontier = new(NodePriorityComparer<TNode>.Instance);
-        IEnumerator<TNode> enumerator = EnumerableGenericSearch<TNode>.EnumerateVertices(graph, source, frontier);
-        while (enumerator.MoveNext())
-            yield return enumerator.Current;
+        IEnumerable<TNode> nodes = EnumerableGenericSearch<TNode>.EnumerateVertices(graph, source, frontier);
+        foreach (TNode node in nodes)
+            yield return node;
     }
 }
