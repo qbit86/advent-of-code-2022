@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Arborescence.Traversal;
+using Arborescence.Traversal.Incidence;
 
 namespace AdventOfCode2022;
 
@@ -35,11 +35,11 @@ public sealed class PuzzlePartTwo : IPuzzle<long>
         Task future2 = DumpAsync(refinedExpressions,
             $"{expressions.Length}-{refinedExpressions.OfType<BinaryExpression>().Count()}-{refinedExpressions.Count}");
 
-        EnumerableDfs<Graph, string, Expression, IEnumerator<Expression>> dfs = new();
         Graph graph = new(expressionById);
         HashSet<string> exploredSet = new();
-        IEnumerator<string> vertexEnumerator = dfs.EnumerateVertices(graph, RootEqualityExpression.RootId, exploredSet);
-        while (vertexEnumerator.MoveNext()) { }
+        IEnumerable<string> vertices =
+            EnumerableDfs<string, Expression>.EnumerateVertices(graph, RootEqualityExpression.RootId, exploredSet);
+        foreach (string _ in vertices) { }
 
         foreach (Expression current in refinedExpressions)
         {
