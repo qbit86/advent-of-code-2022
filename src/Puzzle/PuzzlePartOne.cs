@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Arborescence.Traversal.Adjacency;
 
@@ -24,14 +24,7 @@ public sealed class PuzzlePartOne : IPuzzle<long>
 
         Node source = new(Graph.Start, 0);
         Point targetPosition = graph.Goal;
-        IEnumerator<Node> nodeEnumerator = EnumerableBfs<Node>.EnumerateVertices(graph, source);
-        while (nodeEnumerator.MoveNext())
-        {
-            Node current = nodeEnumerator.Current;
-            if (current.Position == targetPosition)
-                return current.Time;
-        }
-
-        throw new UnreachableException();
+        IEnumerable<Node> nodes = EnumerableBfs<Node>.EnumerateVertices(graph, source);
+        return nodes.Where(it => it.Position == targetPosition).Select(it => it.Time).First();
     }
 }

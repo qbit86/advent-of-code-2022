@@ -24,13 +24,12 @@ public sealed class PuzzlePartTwo : IPuzzle<long>
         Node firstStart = new(Graph.Start, 0);
         Node firstGoal = default;
         HashSet<Node> exploredSet = new();
-        IEnumerator<Node> firstTripEnumerator = EnumerableBfs<Node>.EnumerateVertices(graph, firstStart, exploredSet);
-        while (firstTripEnumerator.MoveNext())
+        IEnumerable<Node> firstTripNodes = EnumerableBfs<Node>.EnumerateVertices(graph, firstStart, exploredSet);
+        foreach (Node node in firstTripNodes)
         {
-            Node current = firstTripEnumerator.Current;
-            if (current.Position == graph.Goal)
+            if (node.Position == graph.Goal)
             {
-                firstGoal = current;
+                firstGoal = node;
                 break;
             }
         }
@@ -39,13 +38,12 @@ public sealed class PuzzlePartTwo : IPuzzle<long>
 
         Node secondStart = default;
         exploredSet.Clear();
-        IEnumerator<Node> secondTripEnumerator = EnumerableBfs<Node>.EnumerateVertices(graph, firstGoal, exploredSet);
-        while (secondTripEnumerator.MoveNext())
+        IEnumerable<Node> secondTripNodes = EnumerableBfs<Node>.EnumerateVertices(graph, firstGoal, exploredSet);
+        foreach (Node node in secondTripNodes)
         {
-            Node current = secondTripEnumerator.Current;
-            if (current.Position == Graph.Start)
+            if (node.Position == Graph.Start)
             {
-                secondStart = current;
+                secondStart = node;
                 break;
             }
         }
@@ -54,13 +52,12 @@ public sealed class PuzzlePartTwo : IPuzzle<long>
 
         Node secondGoal = default;
         exploredSet.Clear();
-        IEnumerator<Node> thirdTripEnumerator = EnumerableBfs<Node>.EnumerateVertices(graph, secondStart, exploredSet);
-        while (thirdTripEnumerator.MoveNext())
+        IEnumerable<Node> thirdTripNodes = EnumerableBfs<Node>.EnumerateVertices(graph, secondStart, exploredSet);
+        foreach (Node node in thirdTripNodes)
         {
-            Node current = thirdTripEnumerator.Current;
-            if (current.Position == graph.Goal)
+            if (node.Position == graph.Goal)
             {
-                secondGoal = current;
+                secondGoal = node;
                 break;
             }
         }
