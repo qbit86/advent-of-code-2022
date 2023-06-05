@@ -8,7 +8,7 @@ namespace AdventOfCode2022;
 
 internal readonly record struct Node(Point Position, int Time);
 
-internal sealed class Graph : IAdjacency<Node, IEnumerator<Node>>
+internal sealed class Graph : IOutNeighborsAdjacency<Node, IEnumerator<Node>>
 {
     private static readonly Size[] s_directions = { D.UnitX, D.UnitY, D.MinusUnitX, D.MinusUnitY, Size.Empty };
     private static readonly HashSet<Point> s_reusableSet = new();
@@ -29,7 +29,7 @@ internal sealed class Graph : IAdjacency<Node, IEnumerator<Node>>
     private Size Size { get; }
     internal Point Goal { get; }
 
-    public IEnumerator<Node> EnumerateNeighbors(Node vertex)
+    public IEnumerator<Node> EnumerateOutNeighbors(Node vertex)
     {
         (Point position, int time) = vertex;
         int newTime = time + 1;
