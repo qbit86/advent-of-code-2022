@@ -62,7 +62,7 @@ internal sealed record HumanVariableExpression() : Expression(HumanId)
         None(out value);
 
     internal static bool TryParse(string line, [NotNullWhen(true)] out HumanVariableExpression? value) =>
-        line.StartsWith(HumanId + ":") ? Some(new(), out value) : None(out value);
+        line.StartsWith(HumanId + ":", StringComparison.Ordinal) ? Some(new(), out value) : None(out value);
 }
 
 internal abstract record BinaryExpression(string Id, string Left, string Right) : Expression(Id);
@@ -151,7 +151,7 @@ internal sealed record RootEqualityExpression(string Left, string Right) : Binar
 
     internal static bool TryParse(string line, [NotNullWhen(true)] out RootEqualityExpression? value)
     {
-        if (!line.StartsWith(RootId + ":"))
+        if (!line.StartsWith(RootId + ":", StringComparison.Ordinal))
             return None(out value);
 
         string[] parts = line.Split(" ", StringSplitOptions.TrimEntries);
