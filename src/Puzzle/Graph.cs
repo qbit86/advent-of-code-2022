@@ -5,7 +5,7 @@ using Arborescence;
 
 namespace AdventOfCode2022;
 
-internal sealed class Graph : IAdjacency<Vector3, IEnumerator<Vector3>>
+internal sealed class Graph : IOutNeighborsAdjacency<Vector3, IEnumerator<Vector3>>
 {
     private readonly IReadOnlySet<Vector3> _cubes;
     private readonly Vector3 _max;
@@ -18,7 +18,7 @@ internal sealed class Graph : IAdjacency<Vector3, IEnumerator<Vector3>>
         _max = max;
     }
 
-    public IEnumerator<Vector3> EnumerateNeighbors(Vector3 vertex)
+    public IEnumerator<Vector3> EnumerateOutNeighbors(Vector3 vertex)
     {
         if (_cubes.Contains(vertex))
             yield break;

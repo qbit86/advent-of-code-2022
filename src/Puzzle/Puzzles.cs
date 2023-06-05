@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Numerics;
 
 namespace AdventOfCode2022;
@@ -14,9 +15,9 @@ public static class Puzzles
         string[] parts = line.Split(',');
         if (parts.Length != 3)
             throw new ArgumentException($"{nameof(parts)}.Length: {parts.Length}", nameof(line));
-        int x = int.Parse(parts[0]);
-        int y = int.Parse(parts[1]);
-        int z = int.Parse(parts[2]);
+        int x = int.Parse(parts[0], CultureInfo.InvariantCulture);
+        int y = int.Parse(parts[1], CultureInfo.InvariantCulture);
+        int z = int.Parse(parts[2], CultureInfo.InvariantCulture);
         return new(x, y, z);
     }
 
