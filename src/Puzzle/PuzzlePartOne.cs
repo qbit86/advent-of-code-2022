@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using Arborescence;
-using Arborescence.Models;
+using Arborescence.Models.Specialized;
 
 namespace AdventOfCode2022;
 
@@ -23,7 +23,7 @@ public sealed class PuzzlePartOne : IPuzzle<long>
         if (!TryFindSourceAndDestination(lines, out int source, out int destination))
             throw new ArgumentException($"{nameof(TryFindSourceAndDestination)}: false", nameof(lines));
 
-        SimpleIncidenceGraph graph = CreateGraph(lines);
+        Int32AdjacencyGraph graph = CreateGraph(lines);
 
         int[] distanceByVertex = GC.AllocateUninitializedArray<int>(graph.VertexCount);
         distanceByVertex.AsSpan().Fill(int.MaxValue);
@@ -37,7 +37,7 @@ public sealed class PuzzlePartOne : IPuzzle<long>
             if (current == destination)
                 return distanceByVertex[current];
             Debug.Assert(predecessorByVertex[current].HasValue);
-            ArraySegment<Int32Endpoints>.Enumerator edges = graph.EnumerateOutEdges(current);
+            IncidenceEnumerator<int, ArraySegment<int>.Enumerator> edges = graph.EnumerateOutEdges(current);
             while (edges.MoveNext())
             {
                 int neighbor = edges.Current.Head;
@@ -53,14 +53,14 @@ public sealed class PuzzlePartOne : IPuzzle<long>
         return distanceByVertex[destination];
     }
 
-    private static SimpleIncidenceGraph CreateGraph(IReadOnlyList<string> lines)
+    private static Int32AdjacencyGraph CreateGraph(IReadOnlyList<string> lines)
     {
         int rowCount = lines.Count;
         Debug.Assert(rowCount > 0);
         int columnCount = lines[0].Length;
         Debug.Assert(columnCount > 0);
         int vertexCount = rowCount * columnCount;
-        SimpleIncidenceGraph.Builder builder = new(vertexCount, 4);
+        List<Endpoints<int>> edges = new(vertexCount);
         for (int rowIndex = 0, tail = 0; rowIndex < rowCount; ++rowIndex)
         {
             string row = lines[rowIndex];
@@ -75,7 +75,7 @@ public sealed class PuzzlePartOne : IPuzzle<long>
                     if (headHeight <= tailHeight + 1)
                     {
                         int head = rowIndex * columnCount + columnIndex + 1;
-                        builder.Add(tail, head);
+                        edges.Add(new(tail, head));
                     }
                 }
 
@@ -85,7 +85,7 @@ public sealed class PuzzlePartOne : IPuzzle<long>
                     if (headHeight <= tailHeight + 1)
                     {
                         int head = (rowIndex - 1) * columnCount + columnIndex;
-                        builder.Add(tail, head);
+                        edges.Add(new(tail, head));
                     }
                 }
 
@@ -95,7 +95,7 @@ public sealed class PuzzlePartOne : IPuzzle<long>
                     if (headHeight <= tailHeight + 1)
                     {
                         int head = rowIndex * columnCount + columnIndex - 1;
-                        builder.Add(tail, head);
+                        edges.Add(new(tail, head));
                     }
                 }
 
@@ -105,13 +105,13 @@ public sealed class PuzzlePartOne : IPuzzle<long>
                     if (headHeight <= tailHeight + 1)
                     {
                         int head = (rowIndex + 1) * columnCount + columnIndex;
-                        builder.Add(tail, head);
+                        edges.Add(new(tail, head));
                     }
                 }
             }
         }
 
-        return builder.ToGraph();
+        return Int32AdjacencyGraphFactory.FromEdges(edges);
     }
 
     internal static bool TryFindSourceAndDestination(IReadOnlyList<string> lines, out int source, out int destination)
