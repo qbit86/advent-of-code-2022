@@ -12,7 +12,7 @@ public static class Puzzles
     public static PuzzlePartTwo PartTwo { get; } = new();
 
     internal static IEnumerable<TNode> Traverse<TGraph, TNode>(TGraph graph, TNode source)
-        where TGraph : IAdjacency<TNode, IEnumerator<TNode>>
+        where TGraph : IOutNeighborsAdjacency<TNode, IEnumerator<TNode>>
         where TNode : INode
     {
         Frontier<TNode> frontier = new(NodePriorityComparer<TNode>.Instance);

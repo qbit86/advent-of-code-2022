@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -28,7 +29,7 @@ internal readonly partial record struct ValveRecord(byte Id, string Name, int Ra
             throw new ArgumentException($"{nameof(match)}.Success: false", nameof(line));
         GroupCollection groups = match.Groups;
         string name = groups["valve"].Captures.Single().Value;
-        int rate = int.Parse(groups["rate"].Captures.Single().Value);
+        int rate = int.Parse(groups["rate"].Captures.Single().Value, CultureInfo.InvariantCulture);
         string[] neighbors = groups["neighbor"].Captures.Select(it => it.Value).ToArray();
         return new((byte)id, name, rate, neighbors);
     }

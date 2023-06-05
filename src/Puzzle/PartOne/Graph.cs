@@ -6,7 +6,7 @@ using Arborescence;
 
 namespace AdventOfCode2022.PartOne;
 
-internal sealed class Graph : IAdjacency<Node, IEnumerator<Node>>
+internal sealed class Graph : IOutNeighborsAdjacency<Node, IEnumerator<Node>>
 {
     private readonly int _totalFlowRate;
     private readonly IReadOnlyList<ValveRecord> _valveRecordById;
@@ -23,7 +23,7 @@ internal sealed class Graph : IAdjacency<Node, IEnumerator<Node>>
         _totalFlowRate = totalFlowRate;
     }
 
-    public IEnumerator<Node> EnumerateNeighbors(Node vertex)
+    public IEnumerator<Node> EnumerateOutNeighbors(Node vertex)
     {
         Debug.Assert(vertex.DepthLeft >= 0);
         if (vertex.DepthLeft == 0)
