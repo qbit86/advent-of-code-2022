@@ -4,9 +4,9 @@ using Arborescence;
 namespace AdventOfCode2022;
 
 internal sealed record Graph(Blueprint Blueprint, int ElapsedMinutesBound) :
-    IAdjacency<Node, IEnumerator<Node>>
+    IOutNeighborsAdjacency<Node, IEnumerator<Node>>
 {
-    public IEnumerator<Node> EnumerateNeighbors(Node vertex)
+    public IEnumerator<Node> EnumerateOutNeighbors(Node vertex)
     {
         if (vertex.ElapsedMinutes == ElapsedMinutesBound)
             yield break;
