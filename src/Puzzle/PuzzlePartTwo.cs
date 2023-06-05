@@ -123,7 +123,7 @@ public sealed class PuzzlePartTwo : IPuzzle<long>
         for (int rowIndex = 0; rowIndex < lines.Count; ++rowIndex)
         {
             string row = lines[rowIndex];
-            int columnIndex = row.IndexOf('E');
+            int columnIndex = row.IndexOf('E', StringComparison.Ordinal);
             if (columnIndex < 0)
                 continue;
 
