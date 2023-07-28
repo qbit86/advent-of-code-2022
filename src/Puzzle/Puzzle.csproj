@@ -3,7 +3,7 @@
     <TargetFramework>net7.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Arborescence.Abstractions" Version="0.16.0" />
-    <PackageReference Include="Arborescence.Traversal" Version="0.16.0" />
+    <PackageReference Include="Arborescence.Abstractions" Version="0.16.2" />
+    <PackageReference Include="Arborescence.Traversal" Version="0.16.2" />
   </ItemGroup>
 </Project>
