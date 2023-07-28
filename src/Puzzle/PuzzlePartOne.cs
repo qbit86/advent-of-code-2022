@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using Arborescence;
+using Arborescence.Models;
 using Arborescence.Models.Specialized;
 
 namespace AdventOfCode2022;

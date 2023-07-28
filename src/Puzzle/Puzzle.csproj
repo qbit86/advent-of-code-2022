@@ -3,6 +3,6 @@
     <TargetFramework>net7.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Arborescence.Models.Specialized" Version="0.16.1" />
+    <PackageReference Include="Arborescence.Models.Specialized" Version="0.16.2" />
   </ItemGroup>
 </Project>
